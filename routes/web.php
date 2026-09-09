@@ -9,6 +9,11 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::resource('categories', CategoryController::class)->except(['show']);
-Route::resource('venues', VenueController::class)->except(['show']);
+Route::resource('categories', CategoryController::class)
+    ->except(['show'])
+    ->middleware(['auth', 'role:admin']);
+
+Route::resource('venues', VenueController::class)
+    ->except(['show'])
+    ->middleware(['auth', 'role:admin']);
 Route::resource('events', EventController::class)->except(['show'])->middleware('auth');
