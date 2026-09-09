@@ -44,6 +44,10 @@ class CategoryController extends Controller
 
     public function destroy(Category $category): RedirectResponse
     {
+        if ($category->events()->exists()) {
+            return to_route('categories.index')->with('error', 'Não é possível excluir uma categoria vinculada a eventos.');
+        }
+
         $category->delete();
 
         return to_route('categories.index')->with('success', 'Categoria removida com sucesso.');
