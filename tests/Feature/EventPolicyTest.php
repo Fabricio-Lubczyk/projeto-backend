@@ -48,6 +48,36 @@ class EventPolicyTest extends TestCase
         $this->assertFalse($participant->can('create', Event::class));
     }
 
+    public function test_event_capacity_cannot_exceed_venue_capacity(): void
+    {
+        $organizer = User::factory()->create([
+            'role' => UserRole::Organizer,
+        ]);
+
+        $category = Category::create([
+            'name' => 'Palestra',
+        ]);
+
+        $venue = Venue::create([
+            'name' => 'Auditório',
+            'address' => 'Bloco A',
+            'capacity' => 50,
+        ]);
+
+        $this->actingAs($organizer)
+            ->post(route('events.store'), [
+                'category_id' => $category->id,
+                'venue_id' => $venue->id,
+                'title' => 'Evento teste',
+                'starts_at' => '2026-10-10 14:00:00',
+                'capacity' => 51,
+                'status' => 'rascunho',
+            ])
+            ->assertSessionHasErrors('capacity');
+
+        $this->assertDatabaseCount('events', 0);
+    }
+
     private function createEvent(User $organizer): Event
     {
         $category = Category::create([
