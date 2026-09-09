@@ -25,6 +25,9 @@ class DatabaseSeeder extends Seeder
             'role' => UserRole::Admin,
         ]);
 
-        $this->call(CategorySeeder::class);
+        $this->call([
+            CategorySeeder::class,
+            VenueSeeder::class,
+        ]);
     }
 }
