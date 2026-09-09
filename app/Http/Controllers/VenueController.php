@@ -44,6 +44,10 @@ class VenueController extends Controller
 
     public function destroy(Venue $venue): RedirectResponse
     {
+        if ($venue->events()->exists()) {
+            return to_route('venues.index')->with('error', 'Não é possível excluir um local vinculado a eventos.');
+        }
+
         $venue->delete();
 
         return to_route('venues.index')->with('success', 'Local removido com sucesso.');

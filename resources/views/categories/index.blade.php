@@ -12,6 +12,10 @@
         <p>{{ session('success') }}</p>
     @endif
 
+    @if (session('error'))
+        <p>{{ session('error') }}</p>
+    @endif
+
     <p><a href="{{ route('categories.create') }}">Nova categoria</a></p>
 
     <ul>
