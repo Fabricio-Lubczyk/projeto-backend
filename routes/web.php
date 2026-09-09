@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\EventController;
 use App\Http\Controllers\VenueController;
 use Illuminate\Support\Facades\Route;
 
@@ -10,3 +11,4 @@ Route::get('/', function () {
 
 Route::resource('categories', CategoryController::class)->except(['show']);
 Route::resource('venues', VenueController::class)->except(['show']);
+Route::resource('events', EventController::class)->except(['show'])->middleware('auth');
