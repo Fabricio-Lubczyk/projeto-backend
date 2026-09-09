@@ -18,7 +18,9 @@ class CategoryController extends Controller
 
     public function create(): View
     {
-        return view('categories.create');
+        return view('categories.create', [
+            'category' => null,
+        ]);
     }
 
     public function store(CategoryRequest $request): RedirectResponse
