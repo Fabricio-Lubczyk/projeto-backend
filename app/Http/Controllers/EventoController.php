@@ -4,7 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\CategoriaEvento;
 use App\Models\Evento;
-use Illuminate\Http\Request;
+use App\Http\Requests\CriarEventoRequest;
+use App\Http\Requests\AtualizarEventoRequest;
 
 class EventoController extends Controller
 {
@@ -25,19 +26,9 @@ class EventoController extends Controller
         return view('eventos.criar', compact('categorias'));
     }
 
-    public function store(Request $request)
+    public function store(CriarEventoRequest $request)
     {
-        $dados = $request->validate([
-            'categoria_evento_id' => 'required|exists:categorias_eventos,id',
-            'titulo' => 'required|string|max:255',
-            'descricao' => 'required|string',
-            'local' => 'required|string|max:255',
-            'data_evento' => 'required|date',
-            'horario_inicio' => 'required',
-            'horario_fim' => 'required',
-            'max_participantes' => 'required|integer|min:1',
-            'status' => 'required|string|max:50',
-        ]);
+        $dados = $request->validated();
 
         $dados['usuario_id'] = auth()->id();
 
@@ -62,19 +53,11 @@ class EventoController extends Controller
         return view('eventos.editar', compact('evento', 'categorias'));
     }
 
-    public function update(Request $request, Evento $evento)
-    {
-        $dados = $request->validate([
-            'categoria_evento_id' => 'required|exists:categorias_eventos,id',
-            'titulo' => 'required|string|max:255',
-            'descricao' => 'required|string',
-            'local' => 'required|string|max:255',
-            'data_evento' => 'required|date',
-            'horario_inicio' => 'required',
-            'horario_fim' => 'required',
-            'max_participantes' => 'required|integer|min:1',
-            'status' => 'required|string|max:50',
-        ]);
+    public function update(
+        AtualizarEventoRequest $request,
+        Evento $evento
+    ) {
+        $dados = $request->validated();
 
         $evento->update($dados);
 
