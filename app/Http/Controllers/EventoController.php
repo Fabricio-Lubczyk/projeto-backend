@@ -15,7 +15,7 @@ class EventoController extends Controller
             ->orderBy('horario_inicio')
             ->get();
 
-        return view('eventos.index', compact('eventos'));
+        return view('eventos.lista', compact('eventos'));
     }
 
     public function create()
