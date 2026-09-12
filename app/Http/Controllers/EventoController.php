@@ -48,11 +48,11 @@ class EventoController extends Controller
             ->with('sucesso', 'Evento criado com sucesso.');
     }
 
-    public function show(Evento $evento)
+   public function show(Evento $evento)
     {
         $evento->load(['categoria', 'organizador']);
-
-        return view('eventos.show', compact('evento'));
+    
+        return view('eventos.detalhes', compact('evento'));
     }
 
     public function edit(Evento $evento)
