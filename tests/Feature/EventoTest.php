@@ -167,4 +167,131 @@ class EventoTest extends TestCase
             'id' => $evento->id,
         ]);
     }
+    public function test_nao_permite_evento_com_data_passada(): void
+{
+    $usuario = User::factory()->create();
+
+    $categoria = CategoriaEvento::create([
+        'nome' => 'Esportes',
+        'descricao' => 'Eventos esportivos.',
+    ]);
+
+    $dados = [
+        'categoria_evento_id' => $categoria->id,
+        'titulo' => 'Evento com Data Passada',
+        'descricao' => 'Teste de validação.',
+        'local' => 'Ginásio',
+        'data_evento' => now()->subDay()->toDateString(),
+        'horario_inicio' => '18:00',
+        'horario_fim' => '20:00',
+        'max_participantes' => 50,
+        'status' => 'ativo',
+    ];
+
+    $resposta = $this
+        ->actingAs($usuario)
+        ->post(route('eventos.store'), $dados);
+
+    $resposta->assertSessionHasErrors('data_evento');
+
+    $this->assertDatabaseMissing('eventos', [
+        'titulo' => 'Evento com Data Passada',
+    ]);
+}
+
+public function test_nao_permite_horario_final_anterior_ao_inicial(): void
+{
+    $usuario = User::factory()->create();
+
+    $categoria = CategoriaEvento::create([
+        'nome' => 'Tecnologia',
+        'descricao' => 'Eventos de tecnologia.',
+    ]);
+
+    $dados = [
+        'categoria_evento_id' => $categoria->id,
+        'titulo' => 'Evento Horário Inválido',
+        'descricao' => 'Teste de horários.',
+        'local' => 'Laboratório',
+        'data_evento' => now()->addDays(5)->toDateString(),
+        'horario_inicio' => '18:00',
+        'horario_fim' => '15:00',
+        'max_participantes' => 30,
+        'status' => 'ativo',
+    ];
+
+    $resposta = $this
+        ->actingAs($usuario)
+        ->post(route('eventos.store'), $dados);
+
+    $resposta->assertSessionHasErrors('horario_fim');
+
+    $this->assertDatabaseMissing('eventos', [
+        'titulo' => 'Evento Horário Inválido',
+    ]);
+}
+
+public function test_nao_permite_evento_sem_participantes(): void
+{
+    $usuario = User::factory()->create();
+
+    $categoria = CategoriaEvento::create([
+        'nome' => 'Acadêmico',
+        'descricao' => 'Eventos acadêmicos.',
+    ]);
+
+    $dados = [
+        'categoria_evento_id' => $categoria->id,
+        'titulo' => 'Evento Sem Participantes',
+        'descricao' => 'Teste de participantes.',
+        'local' => 'Auditório',
+        'data_evento' => now()->addDays(5)->toDateString(),
+        'horario_inicio' => '19:00',
+        'horario_fim' => '22:00',
+        'max_participantes' => 0,
+        'status' => 'ativo',
+    ];
+
+    $resposta = $this
+        ->actingAs($usuario)
+        ->post(route('eventos.store'), $dados);
+
+    $resposta->assertSessionHasErrors('max_participantes');
+
+    $this->assertDatabaseMissing('eventos', [
+        'titulo' => 'Evento Sem Participantes',
+    ]);
+}
+
+public function test_nao_permite_status_invalido(): void
+{
+    $usuario = User::factory()->create();
+
+    $categoria = CategoriaEvento::create([
+        'nome' => 'Cultural',
+        'descricao' => 'Eventos culturais.',
+    ]);
+
+    $dados = [
+        'categoria_evento_id' => $categoria->id,
+        'titulo' => 'Evento Status Inválido',
+        'descricao' => 'Teste de status.',
+        'local' => 'Centro Cultural',
+        'data_evento' => now()->addDays(5)->toDateString(),
+        'horario_inicio' => '18:00',
+        'horario_fim' => '21:00',
+        'max_participantes' => 100,
+        'status' => 'qualquer_coisa',
+    ];
+
+    $resposta = $this
+        ->actingAs($usuario)
+        ->post(route('eventos.store'), $dados);
+
+    $resposta->assertSessionHasErrors('status');
+
+    $this->assertDatabaseMissing('eventos', [
+        'titulo' => 'Evento Status Inválido',
+    ]);
+}
 }
