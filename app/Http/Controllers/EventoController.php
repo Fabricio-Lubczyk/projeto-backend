@@ -59,7 +59,7 @@ class EventoController extends Controller
     {
         $categorias = CategoriaEvento::orderBy('nome')->get();
 
-        return view('eventos.edit', compact('evento', 'categorias'));
+        return view('eventos.editar', compact('evento', 'categorias'));
     }
 
     public function update(Request $request, Evento $evento)
