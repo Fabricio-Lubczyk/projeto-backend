@@ -22,7 +22,7 @@ class EventoController extends Controller
     {
         $categorias = CategoriaEvento::orderBy('nome')->get();
 
-        return view('eventos.create', compact('categorias'));
+        return view('eventos.criar', compact('categorias'));
     }
 
     public function store(Request $request)
