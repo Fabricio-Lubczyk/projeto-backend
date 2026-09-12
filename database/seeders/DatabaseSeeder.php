@@ -17,17 +17,10 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        User::query()->firstOrCreate([
-            'email' => 'test@example.com',
-        ], [
-            'name' => 'Administrador',
-            'password' => Hash::make('password'),
-            'role' => UserRole::Admin,
-        ]);
+        // User::factory(10)->create();
 
         $this->call([
-            CategorySeeder::class,
-            VenueSeeder::class,
+        CategoriaEventoSeeder::class,
         ]);
     }
 }
