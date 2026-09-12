@@ -6,6 +6,7 @@ use App\Http\Controllers\EventoController;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 
+
 Route::get('/', function () {
     return view('welcome');
 });
@@ -24,4 +25,6 @@ Route::get('/entrar-teste', function () {
     Auth::login($usuario);
 
     return redirect()->route('eventos.create');
+
+    
 });

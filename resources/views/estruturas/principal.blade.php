@@ -7,6 +7,33 @@
     <title>@yield('titulo', 'Sistema de Eventos')</title>
 
     <style>
+        .status {
+    display: inline-block;
+    padding: 5px 10px;
+    border-radius: 15px;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.status-ativo {
+    background-color: #dcfce7;
+    color: #166534;
+}
+
+.status-inativo {
+    background-color: #f3f4f6;
+    color: #374151;
+}
+
+.status-cancelado {
+    background-color: #fee2e2;
+    color: #991b1b;
+}
+
+.vagas {
+    font-weight: bold;
+}
+        
         body {
             font-family: Arial, sans-serif;
             background-color: #f4f4f4;
