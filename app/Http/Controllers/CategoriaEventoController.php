@@ -11,12 +11,12 @@ class CategoriaEventoController extends Controller
     {
         $categorias = CategoriaEvento::orderBy('nome')->get();
 
-        return view('categorias_eventos.index', compact('categorias'));
+        return view('categorias-eventos.lista', compact('categorias'));
     }
 
     public function create()
     {
-        return view('categorias_eventos.create');
+        return view('categorias-eventos.criar');
     }
 
     public function store(Request $request)
@@ -36,7 +36,7 @@ class CategoriaEventoController extends Controller
     public function edit(CategoriaEvento $categoriaEvento)
     {
         return view(
-            'categorias_eventos.edit',
+            'categorias-eventos.editar',
             compact('categoriaEvento')
         );
     }
