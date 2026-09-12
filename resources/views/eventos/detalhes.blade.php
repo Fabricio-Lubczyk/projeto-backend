@@ -12,6 +12,7 @@
         <form
             action="{{ route('eventos.destroy', $evento) }}"
             method="POST"
+            style="display: inline-block;"
             onsubmit="return confirm('Deseja realmente excluir este evento?')"
         >
             @csrf

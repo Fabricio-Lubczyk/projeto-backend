@@ -25,9 +25,12 @@ class EventoController extends Controller
 
         return view('eventos.criar', compact('categorias'));
     }
-
     public function store(CriarEventoRequest $request)
     {
+        if (!auth()->check()) {
+            abort(403, 'Você precisa estar autenticado para criar um evento.');
+        }
+
         $dados = $request->validated();
 
         $dados['usuario_id'] = auth()->id();
@@ -37,7 +40,7 @@ class EventoController extends Controller
         return redirect()
             ->route('eventos.index')
             ->with('sucesso', 'Evento criado com sucesso.');
-    }
+    }   
 
    public function show(Evento $evento)
     {
@@ -48,15 +51,31 @@ class EventoController extends Controller
 
     public function edit(Evento $evento)
     {
+        if (!auth()->check()) {
+            abort(403, 'Você precisa estar autenticado.');
+        }
+
+        if ($evento->usuario_id !== auth()->id()) {
+            abort(403, 'Você não possui permissão para editar este evento.');
+        }
+
         $categorias = CategoriaEvento::orderBy('nome')->get();
 
         return view('eventos.editar', compact('evento', 'categorias'));
     }
 
     public function update(
-        AtualizarEventoRequest $request,
-        Evento $evento
+    AtualizarEventoRequest $request,
+    Evento $evento
     ) {
+        if (!auth()->check()) {
+            abort(403, 'Você precisa estar autenticado.');
+        }
+
+        if ($evento->usuario_id !== auth()->id()) {
+            abort(403, 'Você não possui permissão para editar este evento.');
+        }
+
         $dados = $request->validated();
 
         $evento->update($dados);
@@ -68,6 +87,14 @@ class EventoController extends Controller
 
     public function destroy(Evento $evento)
     {
+        if (!auth()->check()) {
+            abort(403, 'Você precisa estar autenticado.');
+        }
+
+        if ($evento->usuario_id !== auth()->id()) {
+            abort(403, 'Você não possui permissão para excluir este evento.');
+        }
+
         $evento->delete();
 
         return redirect()
