@@ -48,6 +48,12 @@ class ProfileController extends Controller
 
         $user = $request->user();
 
+        if ($user->eventosOrganizados()->exists()) {
+            return back()->withErrors([
+                'password' => 'Não é possível excluir a conta enquanto houver eventos vinculados a ela.',
+            ], 'userDeletion');
+        }
+
         Auth::logout();
 
         $user->delete();
