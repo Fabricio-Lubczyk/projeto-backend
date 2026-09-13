@@ -50,6 +50,20 @@
             border-radius: 8px;
         }
 
+        .navegacao {
+            display: flex;
+            gap: 14px;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .navegacao a {
+            color: #333;
+            font-weight: bold;
+            text-decoration: none;
+        }
+
         h1 {
             margin-top: 0;
         }
@@ -134,6 +148,18 @@
 
 <div class="container">
 
+    <nav class="navegacao">
+        <a href="{{ route('eventos.index') }}">Eventos</a>
+
+        @auth
+            <a href="{{ route('inscricoes.minhas') }}">Minhas inscrições</a>
+            <a href="{{ route('dashboard') }}">Painel</a>
+        @else
+            <a href="{{ route('login') }}">Entrar</a>
+            <a href="{{ route('register') }}">Cadastrar</a>
+        @endauth
+    </nav>
+
     @if(session('sucesso'))
         <div class="sucesso">
             {{ session('sucesso') }}
@@ -143,6 +169,16 @@
     @if(session('erro'))
         <div class="erro">
             {{ session('erro') }}
+        </div>
+    @endif
+
+    @if($errors->any())
+        <div class="erro">
+            <ul>
+                @foreach($errors->all() as $erro)
+                    <li>{{ $erro }}</li>
+                @endforeach
+            </ul>
         </div>
     @endif
 

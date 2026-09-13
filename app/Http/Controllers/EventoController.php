@@ -12,6 +12,7 @@ class EventoController extends Controller
     public function index()
     {
         $eventos = Evento::with(['categoria', 'organizador'])
+            ->withCount('inscricoesConfirmadas')
             ->orderBy('data_evento')
             ->orderBy('horario_inicio')
             ->get();
@@ -45,8 +46,12 @@ class EventoController extends Controller
    public function show(Evento $evento)
     {
         $evento->load(['categoria', 'organizador']);
-    
-        return view('eventos.detalhes', compact('evento'));
+
+        $inscricao = auth()->check()
+            ? $evento->inscricoes()->where('usuario_id', auth()->id())->first()
+            : null;
+
+        return view('eventos.detalhes', compact('evento', 'inscricao'));
     }
 
     public function edit(Evento $evento)

@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Evento extends Model
 {
@@ -44,5 +45,25 @@ class Evento extends Model
             User::class,
             'usuario_id'
         );
+    }
+
+    public function inscricoes(): HasMany
+    {
+        return $this->hasMany(Inscricao::class, 'evento_id');
+    }
+
+    public function inscricoesConfirmadas(): HasMany
+    {
+        return $this->inscricoes()->where('status', 'confirmada');
+    }
+
+    public function possuiVagas(): bool
+    {
+        return $this->vagasRestantes() > 0;
+    }
+
+    public function vagasRestantes(): int
+    {
+        return max(0, $this->max_participantes - $this->inscricoesConfirmadas()->count());
     }
 }

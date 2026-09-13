@@ -64,7 +64,7 @@
                     </td>
 
                     <td class="vagas">
-                        {{ $evento->max_participantes }}
+                        {{ max(0, $evento->max_participantes - $evento->inscricoes_confirmadas_count) }} de {{ $evento->max_participantes }}
                     </td>
 
                     <td>

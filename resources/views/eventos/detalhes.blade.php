@@ -42,7 +42,7 @@
     <strong>Limite de participantes:</strong>
 
     <span class="vagas">
-        {{ $evento->max_participantes }}
+        {{ $evento->vagasRestantes() }} de {{ $evento->max_participantes }} vagas disponíveis
     </span>
 </p>
 
@@ -63,7 +63,29 @@
 
 @auth
 
+    @if(auth()->id() !== $evento->usuario_id)
+
+        @if($inscricao?->status === 'confirmada')
+            <p>Você já está inscrito neste evento.</p>
+        @elseif($evento->status === 'ativo' && $evento->possuiVagas())
+            <form action="{{ route('inscricoes.store', $evento) }}" method="POST" style="display: inline-block;">
+                @csrf
+
+                <button type="submit" class="botao">
+                    Fazer inscrição
+                </button>
+            </form>
+        @elseif($evento->status === 'ativo')
+            <p>As vagas deste evento já foram preenchidas.</p>
+        @endif
+
+    @endif
+
     @if(auth()->id() === $evento->usuario_id)
+
+        <a href="{{ route('eventos.participantes', $evento) }}" class="botao">
+            Participantes
+        </a>
 
         <a
             href="{{ route('eventos.edit', $evento) }}"
