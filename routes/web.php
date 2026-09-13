@@ -38,6 +38,9 @@ Route::get('/dashboard', function () {
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
+    Route::get('/eventos/{evento}/participantes', [InscricaoController::class, 'participantes'])
+        ->name('eventos.participantes');
+
     Route::delete('/inscricoes/{inscricao}', [InscricaoController::class, 'destroy'])
         ->name('inscricoes.destroy');
 
