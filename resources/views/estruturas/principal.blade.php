@@ -50,6 +50,20 @@
             border-radius: 8px;
         }
 
+        .navegacao {
+            display: flex;
+            gap: 14px;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .navegacao a {
+            color: #333;
+            font-weight: bold;
+            text-decoration: none;
+        }
+
         h1 {
             margin-top: 0;
         }
