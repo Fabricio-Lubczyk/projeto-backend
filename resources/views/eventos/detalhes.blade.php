@@ -83,6 +83,10 @@
 
     @if(auth()->id() === $evento->usuario_id)
 
+        <a href="{{ route('eventos.participantes', $evento) }}" class="botao">
+            Participantes
+        </a>
+
         <a
             href="{{ route('eventos.edit', $evento) }}"
             class="botao"
