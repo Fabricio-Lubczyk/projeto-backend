@@ -45,6 +45,23 @@ class InscricaoTest extends TestCase
         $this->assertDatabaseCount('inscricoes', 1);
     }
 
+    public function test_participante_nao_pode_se_inscrever_quando_nao_ha_vagas(): void
+    {
+        $primeiroParticipante = User::factory()->create(['role' => UserRole::Participant]);
+        $segundoParticipante = User::factory()->create(['role' => UserRole::Participant]);
+        $evento = $this->criarEvento(['max_participantes' => 1]);
+
+        $this->actingAs($primeiroParticipante)->post(route('inscricoes.store', $evento));
+
+        $this->actingAs($segundoParticipante)
+            ->from(route('eventos.show', $evento))
+            ->post(route('inscricoes.store', $evento))
+            ->assertRedirect(route('eventos.show', $evento))
+            ->assertSessionHasErrors('evento');
+
+        $this->assertDatabaseCount('inscricoes', 1);
+    }
+
     private function criarEvento(array $atributos = []): Evento
     {
         $organizador = User::factory()->create(['role' => UserRole::Organizer]);
