@@ -117,6 +117,7 @@ class ProfileTest extends TestCase
         ]);
 
         $this->actingAs($user)
+            ->from('/profile')
             ->delete('/profile', ['password' => 'password'])
             ->assertSessionHasErrorsIn('userDeletion', 'password')
             ->assertRedirect('/profile');
