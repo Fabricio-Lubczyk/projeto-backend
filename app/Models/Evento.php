@@ -56,4 +56,9 @@ class Evento extends Model
     {
         return $this->inscricoes()->where('status', 'confirmada');
     }
+
+    public function possuiVagas(): bool
+    {
+        return $this->inscricoesConfirmadas()->count() < $this->max_participantes;
+    }
 }
