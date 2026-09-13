@@ -42,7 +42,7 @@
     <strong>Limite de participantes:</strong>
 
     <span class="vagas">
-        {{ $evento->max_participantes }}
+        {{ $evento->vagasRestantes() }} de {{ $evento->max_participantes }} vagas disponíveis
     </span>
 </p>
 
