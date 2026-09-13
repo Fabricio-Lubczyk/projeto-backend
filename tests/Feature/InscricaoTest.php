@@ -5,6 +5,7 @@ namespace Tests\Feature;
 use App\Enums\UserRole;
 use App\Models\CategoriaEvento;
 use App\Models\Evento;
+use App\Models\Inscricao;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
@@ -60,6 +61,26 @@ class InscricaoTest extends TestCase
             ->assertSessionHasErrors('evento');
 
         $this->assertDatabaseCount('inscricoes', 1);
+    }
+
+    public function test_participante_pode_cancelar_a_propria_inscricao(): void
+    {
+        $participante = User::factory()->create(['role' => UserRole::Participant]);
+        $evento = $this->criarEvento();
+        $inscricao = Inscricao::query()->create([
+            'evento_id' => $evento->id,
+            'usuario_id' => $participante->id,
+            'status' => 'confirmada',
+        ]);
+
+        $this->actingAs($participante)
+            ->delete(route('inscricoes.destroy', $inscricao))
+            ->assertRedirect(route('inscricoes.minhas'));
+
+        $this->assertDatabaseHas('inscricoes', [
+            'id' => $inscricao->id,
+            'status' => 'cancelada',
+        ]);
     }
 
     private function criarEvento(array $atributos = []): Evento
