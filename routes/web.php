@@ -7,6 +7,7 @@ use App\Http\Controllers\VenueController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CategoriaEventoController;
 use App\Http\Controllers\EventoController;
+use App\Http\Controllers\InscricaoController;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 
@@ -37,6 +38,9 @@ Route::get('/dashboard', function () {
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
+    Route::get('/minhas-inscricoes', [InscricaoController::class, 'minhasInscricoes'])
+        ->name('inscricoes.minhas');
+
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
