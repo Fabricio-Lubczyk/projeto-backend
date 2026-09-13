@@ -19,9 +19,13 @@ Route::get('/', function () {
 Route::resource('categorias-eventos', CategoriaEventoController::class)
     ->parameters([
         'categorias-eventos' => 'categoriaEvento',
-    ]);
+    ])
+    ->except(['show'])
+    ->middleware(['auth', 'role:admin']);
 
-Route::resource('eventos', EventoController::class);
+Route::resource('eventos', EventoController::class)
+    ->except(['index', 'show'])
+    ->middleware('auth');
 
 Route::get('/dashboard', DashboardController::class)
     ->middleware(['auth', 'verified'])
