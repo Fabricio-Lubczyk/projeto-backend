@@ -2,6 +2,8 @@
 
 namespace Tests\Feature;
 
+use App\Models\CategoriaEvento;
+use App\Models\Evento;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
@@ -95,5 +97,31 @@ class ProfileTest extends TestCase
             ->assertRedirect('/profile');
 
         $this->assertNotNull($user->fresh());
+    }
+
+    public function test_usuario_nao_pode_excluir_conta_com_eventos_vinculados(): void
+    {
+        $user = User::factory()->create();
+        $categoria = CategoriaEvento::query()->create(['nome' => 'Tecnologia']);
+        $evento = Evento::query()->create([
+            'categoria_evento_id' => $categoria->id,
+            'usuario_id' => $user->id,
+            'titulo' => 'Encontro Laravel',
+            'descricao' => 'Evento de teste.',
+            'local' => 'Laboratório',
+            'data_evento' => now()->addWeek()->toDateString(),
+            'horario_inicio' => '18:00',
+            'horario_fim' => '20:00',
+            'max_participantes' => 30,
+            'status' => 'ativo',
+        ]);
+
+        $this->actingAs($user)
+            ->delete('/profile', ['password' => 'password'])
+            ->assertSessionHasErrorsIn('userDeletion', 'password')
+            ->assertRedirect('/profile');
+
+        $this->assertNotNull($user->fresh());
+        $this->assertNotNull($evento->fresh());
     }
 }
