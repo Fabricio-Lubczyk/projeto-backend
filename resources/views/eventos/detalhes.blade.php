@@ -81,11 +81,15 @@
 
     @endif
 
-    @if(auth()->id() === $evento->usuario_id)
+    @can('viewParticipants', [\App\Models\Inscricao::class, $evento])
 
         <a href="{{ route('eventos.participantes', $evento) }}" class="botao">
             Participantes
         </a>
+
+    @endcan
+
+    @can('update', $evento)
 
         <a
             href="{{ route('eventos.edit', $evento) }}"
@@ -113,7 +117,7 @@
 
         </form>
 
-    @endif
+    @endcan
 
 @endauth
 

@@ -86,7 +86,7 @@
 
                             @auth
 
-                                @if(auth()->id() === $evento->usuario_id)
+                                @can('update', $evento)
 
                                     <a
                                         href="{{ route('eventos.edit', $evento) }}"
@@ -113,7 +113,7 @@
 
                                     </form>
 
-                                @endif
+                                @endcan
 
                             @endauth
 
