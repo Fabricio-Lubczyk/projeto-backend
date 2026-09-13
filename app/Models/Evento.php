@@ -59,6 +59,11 @@ class Evento extends Model
 
     public function possuiVagas(): bool
     {
-        return $this->inscricoesConfirmadas()->count() < $this->max_participantes;
+        return $this->vagasRestantes() > 0;
+    }
+
+    public function vagasRestantes(): int
+    {
+        return max(0, $this->max_participantes - $this->inscricoesConfirmadas()->count());
     }
 }
