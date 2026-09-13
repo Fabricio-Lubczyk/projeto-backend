@@ -29,6 +29,22 @@ class InscricaoTest extends TestCase
         ]);
     }
 
+    public function test_participante_nao_pode_realizar_duas_inscricoes_no_mesmo_evento(): void
+    {
+        $participante = User::factory()->create(['role' => UserRole::Participant]);
+        $evento = $this->criarEvento();
+
+        $this->actingAs($participante)->post(route('inscricoes.store', $evento));
+
+        $this->actingAs($participante)
+            ->from(route('eventos.show', $evento))
+            ->post(route('inscricoes.store', $evento))
+            ->assertRedirect(route('eventos.show', $evento))
+            ->assertSessionHasErrors('evento');
+
+        $this->assertDatabaseCount('inscricoes', 1);
+    }
+
     private function criarEvento(array $atributos = []): Evento
     {
         $organizador = User::factory()->create(['role' => UserRole::Organizer]);
