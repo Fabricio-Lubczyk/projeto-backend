@@ -11,6 +11,7 @@
 @if($inscricoes->isEmpty())
     <p>Você ainda não possui inscrições em eventos.</p>
 @else
+    <div class="tabela-responsiva">
     <table>
         <thead>
             <tr>
@@ -44,6 +45,7 @@
             @endforeach
         </tbody>
     </table>
+    </div>
 @endif
 
 @endsection

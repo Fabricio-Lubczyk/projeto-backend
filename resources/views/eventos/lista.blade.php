@@ -18,6 +18,7 @@
 
 @else
 
+    <div class="tabela-responsiva">
     <table>
         <thead>
             <tr>
@@ -129,6 +130,7 @@
 
         </tbody>
     </table>
+    </div>
 
 @endif
 

@@ -16,6 +16,7 @@
 
 @else
 
+    <div class="tabela-responsiva">
     <table>
         <thead>
             <tr>
@@ -68,6 +69,7 @@
             @endforeach
         </tbody>
     </table>
+    </div>
 
 @endif
 
