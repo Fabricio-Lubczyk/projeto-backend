@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Enums\UserRole;
 use App\Models\CategoriaEvento;
 use App\Models\Evento;
 use App\Models\User;
@@ -23,7 +24,9 @@ class EventoTest extends TestCase
 
     public function test_usuario_autenticado_pode_criar_evento(): void
     {
-        $usuario = User::factory()->create();
+        $usuario = User::factory()->create([
+            'role' => UserRole::Organizer,
+        ]);
 
         $categoria = CategoriaEvento::create([
             'nome' => 'Esportes',
