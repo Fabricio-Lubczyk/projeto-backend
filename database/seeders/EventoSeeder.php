@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Enums\UserRole;
 use App\Models\CategoriaEvento;
 use App\Models\Evento;
 use App\Models\User;
@@ -11,7 +12,9 @@ class EventoSeeder extends Seeder
 {
     public function run(): void
     {
-        $usuario = User::first();
+        $usuario = User::query()
+            ->where('role', UserRole::Organizer)
+            ->first();
 
         if (!$usuario) {
             $this->command?->warn(
