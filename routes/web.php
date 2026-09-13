@@ -12,7 +12,7 @@ use App\Http\Controllers\InscricaoController;
 
 
 Route::get('/', function () {
-    return view('welcome');
+    return to_route('eventos.index');
 });
 
 
