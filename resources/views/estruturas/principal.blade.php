@@ -134,6 +134,18 @@
 
 <div class="container">
 
+    <nav class="navegacao">
+        <a href="{{ route('eventos.index') }}">Eventos</a>
+
+        @auth
+            <a href="{{ route('inscricoes.minhas') }}">Minhas inscrições</a>
+            <a href="{{ route('dashboard') }}">Painel</a>
+        @else
+            <a href="{{ route('login') }}">Entrar</a>
+            <a href="{{ route('register') }}">Cadastrar</a>
+        @endauth
+    </nav>
+
     @if(session('sucesso'))
         <div class="sucesso">
             {{ session('sucesso') }}
