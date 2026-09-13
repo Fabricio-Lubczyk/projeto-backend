@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Evento extends Model
 {
@@ -44,5 +45,10 @@ class Evento extends Model
             User::class,
             'usuario_id'
         );
+    }
+
+    public function inscricoes(): HasMany
+    {
+        return $this->hasMany(Inscricao::class, 'evento_id');
     }
 }
