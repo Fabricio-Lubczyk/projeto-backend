@@ -2,10 +2,13 @@
 
 namespace App\Models;
 
+use App\Policies\EventoPolicy;
+use Illuminate\Database\Eloquent\Attributes\UsePolicy;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
+#[UsePolicy(EventoPolicy::class)]
 class Evento extends Model
 {
     protected $table = 'eventos';
