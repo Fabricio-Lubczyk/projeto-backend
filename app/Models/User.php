@@ -38,6 +38,11 @@ class User extends Authenticatable
         return $this->hasMany(Evento::class, 'usuario_id');
     }
 
+    public function events(): HasMany
+    {
+        return $this->hasMany(Event::class);
+    }
+
     public function inscricoes(): HasMany
     {
         return $this->hasMany(Inscricao::class, 'usuario_id');
