@@ -22,15 +22,15 @@ class EventoController extends Controller
 
     public function create()
     {
+        $this->authorize('create', Evento::class);
+
         $categorias = CategoriaEvento::orderBy('nome')->get();
 
         return view('eventos.criar', compact('categorias'));
     }
     public function store(CriarEventoRequest $request)
     {
-        if (!auth()->check()) {
-            abort(403, 'Você precisa estar autenticado para criar um evento.');
-        }
+        $this->authorize('create', Evento::class);
 
         $dados = $request->validated();
 
@@ -56,13 +56,7 @@ class EventoController extends Controller
 
     public function edit(Evento $evento)
     {
-        if (!auth()->check()) {
-            abort(403, 'Você precisa estar autenticado.');
-        }
-
-        if ($evento->usuario_id !== auth()->id()) {
-            abort(403, 'Você não possui permissão para editar este evento.');
-        }
+        $this->authorize('update', $evento);
 
         $categorias = CategoriaEvento::orderBy('nome')->get();
 
@@ -73,13 +67,7 @@ class EventoController extends Controller
     AtualizarEventoRequest $request,
     Evento $evento
     ) {
-        if (!auth()->check()) {
-            abort(403, 'Você precisa estar autenticado.');
-        }
-
-        if ($evento->usuario_id !== auth()->id()) {
-            abort(403, 'Você não possui permissão para editar este evento.');
-        }
+        $this->authorize('update', $evento);
 
         $dados = $request->validated();
 
@@ -92,13 +80,7 @@ class EventoController extends Controller
 
     public function destroy(Evento $evento)
     {
-        if (!auth()->check()) {
-            abort(403, 'Você precisa estar autenticado.');
-        }
-
-        if ($evento->usuario_id !== auth()->id()) {
-            abort(403, 'Você não possui permissão para excluir este evento.');
-        }
+        $this->authorize('delete', $evento);
 
         $evento->delete();
 
