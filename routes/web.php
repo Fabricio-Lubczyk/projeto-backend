@@ -27,6 +27,9 @@ Route::resource('eventos', EventoController::class)
     ->except(['index', 'show'])
     ->middleware('auth');
 
+Route::get('/eventos', [EventoController::class, 'index'])->name('eventos.index');
+Route::get('/eventos/{evento}', [EventoController::class, 'show'])->name('eventos.show');
+
 Route::get('/dashboard', DashboardController::class)
     ->middleware(['auth', 'verified'])
     ->name('dashboard');
