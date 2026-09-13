@@ -51,4 +51,9 @@ class Evento extends Model
     {
         return $this->hasMany(Inscricao::class, 'evento_id');
     }
+
+    public function inscricoesConfirmadas(): HasMany
+    {
+        return $this->inscricoes()->where('status', 'confirmada');
+    }
 }
