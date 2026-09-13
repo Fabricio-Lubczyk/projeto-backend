@@ -38,6 +38,9 @@ Route::get('/dashboard', function () {
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
+    Route::post('/eventos/{evento}/inscricoes', [InscricaoController::class, 'store'])
+        ->name('inscricoes.store');
+
     Route::get('/minhas-inscricoes', [InscricaoController::class, 'minhasInscricoes'])
         ->name('inscricoes.minhas');
 
