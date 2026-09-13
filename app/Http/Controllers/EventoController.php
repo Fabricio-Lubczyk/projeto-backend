@@ -12,6 +12,7 @@ class EventoController extends Controller
     public function index()
     {
         $eventos = Evento::with(['categoria', 'organizador'])
+            ->withCount('inscricoesConfirmadas')
             ->orderBy('data_evento')
             ->orderBy('horario_inicio')
             ->get();
