@@ -64,6 +64,14 @@
             text-decoration: none;
         }
 
+        .link-navegacao {
+            padding: 0;
+            border: 0;
+            color: #333;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
         h1 {
             margin-top: 0;
         }
@@ -154,6 +162,15 @@
         @auth
             <a href="{{ route('inscricoes.minhas') }}">Minhas inscrições</a>
             <a href="{{ route('dashboard') }}">Painel</a>
+
+            @if(auth()->user()->role === \App\Enums\UserRole::Admin)
+                <a href="{{ route('categorias-eventos.index') }}">Categorias</a>
+            @endif
+
+            <form method="POST" action="{{ route('logout') }}">
+                @csrf
+                <button type="submit" class="link-navegacao">Sair</button>
+            </form>
         @else
             <a href="{{ route('login') }}">Entrar</a>
             <a href="{{ route('register') }}">Cadastrar</a>
