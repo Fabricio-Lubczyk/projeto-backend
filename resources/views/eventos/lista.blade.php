@@ -6,9 +6,11 @@
 
 <h1>Eventos</h1>
 
-<a href="{{ route('eventos.create') }}" class="botao">
-    Novo evento
-</a>
+@can('create', \App\Models\Evento::class)
+    <a href="{{ route('eventos.create') }}" class="botao">
+        Novo evento
+    </a>
+@endcan
 
 @if($eventos->isEmpty())
 
