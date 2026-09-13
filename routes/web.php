@@ -38,6 +38,9 @@ Route::get('/dashboard', function () {
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
+    Route::delete('/inscricoes/{inscricao}', [InscricaoController::class, 'destroy'])
+        ->name('inscricoes.destroy');
+
     Route::post('/eventos/{evento}/inscricoes', [InscricaoController::class, 'store'])
         ->name('inscricoes.store');
 
