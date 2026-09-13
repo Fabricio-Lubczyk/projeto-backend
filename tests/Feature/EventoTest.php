@@ -22,6 +22,11 @@ class EventoTest extends TestCase
         ]);
     }
 
+    public function test_visitante_pode_ver_lista_de_eventos(): void
+    {
+        $this->get(route('eventos.index'))->assertOk();
+    }
+
     public function test_usuario_autenticado_pode_criar_evento(): void
     {
         $usuario = User::factory()->create([
